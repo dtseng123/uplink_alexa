@@ -1,0 +1,17 @@
+welcome: |
+  uplink.
+
+welcome_re: |
+  uplink. How may I help you?
+
+welcome_card: |
+  uplink is an Alexa skill written by Darren Tseng. Uplink blockchain integration with Alexa
+
+stop_bye: |
+  Goodbye!
+
+cancel_bye: |
+  OK, goodbye!
+
+help_text: |
+  uplink is an Alexa skill that does things. This is where the developer would normally explain how to do them.
