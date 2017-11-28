@@ -1,4 +1,4 @@
-uplink
+Alexa + Uplink
 =============================
 
 Uplink blockchain integration with Alexa
