@@ -4,25 +4,34 @@
 # By Darren Tseng <darren@adjoint.io>
 #
 # Uplink blockchain integration with Alexa
-
+import os
 import logging
 from datetime import datetime
 from flask import Flask, json, render_template
 from flask_ask import Ask, request, session, question, statement
+from uplink import *
+from uplink.session import UplinkSession
 
 __author__ = 'Darren Tseng'
 __email__ = 'darren@adjoint.io'
+rpc_addr = os.environ.get('RPC_HOST', 'localhost')
 
 
 app = Flask(__name__)
 ask = Ask(app, '/')
 logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 
+
+uplink = UplinkSession(addr=rpc_addr)
+
+uplink.init_app(app)
+
 # Session starter
 #
 # This intent is fired automatically at the point of launch (= when the session starts).
 # Use it to register a state machine for things you want to keep track of, such as what the last intent was, so as to be
 # able to give contextual help.
+
 
 @ask.on_session_started
 def start_session():
@@ -35,8 +44,11 @@ def start_session():
 #
 # This intent is fired automatically at the point of launch.
 # Use it as a way to introduce your Skill and say hello to the user. If you envisage your Skill to work using the
-# one-shot paradigm (i.e. the invocation statement contains all the parameters that are required for returning the
+# one-shot paradigm (i.e. the invocation statement contains all the
+# parameters that are required for returning the
+
 # result
+
 
 @ask.launch
 def handle_launch():
@@ -58,6 +70,58 @@ def handle_launch():
                                                                           text=welcome_card_text)
 
 
+@ask.intent('getPeersIntent')
+def getPeers():
+    try:
+        peers = len(uplink.peers())
+    except RpcConnectionFail:
+        peers = 0
+
+    speech_text = ""
+
+    if peers == 0:
+        speech_text = "There are not any nodes on the network. You are not connected to uplink."
+
+    if peers == 1:
+        speech_text = "There is 1 node on the Uplink network."
+
+    if peers > 1:
+        speech_text = "There are {} nodes on the network".format(peers)
+
+    return statement(speech_text).simple_card('Peers:', speech_text)
+
+
+@ask.intent('getBlocksIntent')
+def getBlocks():
+    blocks = uplink.blocks()
+    number_of_blocks = len(blocks)
+
+    if number_of_blocks == 1:
+        text = "There is only the genisis block."
+    else:
+        text = "There are currently {} validated blocks. If you would like to introspect the details of a block, for example, say look at block number 2".format(
+            number_of_blocks)
+
+    return statement(text).simple_card("Blocks", text)
+
+
+@ask.intent('getBlockIntent')
+def getBlock(block_num):
+    blocks = uplink.blocks()
+    block_tx = len(blocks[int(block_num)].transactions)
+
+    if block_tx == 0:
+        text = "This is the genisis block. Try a different one."
+
+    if block_tx == 1:
+        text = "There is 1 transaction in block {}".format(block_num)
+
+    if block_tx > 1:
+        text = "There are {} validated transactions in block {}".format(
+            block_tx, block_num)
+
+    return statement(text).simple_card("Block details:", text)
+
 # Built-in intents
 #
 # These intents are built-in intents. Conveniently, built-in intents do not need you to define utterances, so you can
@@ -65,6 +129,7 @@ def handle_launch():
 # or delete them/comment them out.
 #
 # More about built-in intents: http://d.pr/KKyx
+
 
 @ask.intent('AMAZON.StopIntent')
 def handle_stop():
@@ -100,8 +165,10 @@ def handle_help():
 def handle_no():
     """
     (?) Handles the 'no' built-in intention.
+
     """
     pass
+
 
 @ask.intent('AMAZON.YesIntent')
 def handle_yes():
@@ -117,6 +184,7 @@ def handle_back():
     (?) Handles the 'go back!'  built-in intention.
     """
     pass
+
 
 @ask.intent('AMAZON.StartOverIntent')
 def start_over():

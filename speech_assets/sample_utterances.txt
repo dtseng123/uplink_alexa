@@ -1,0 +1,17 @@
+getPeersIntent get nodes
+getPeersIntent get peers
+getPeersIntent peers in the network
+getPeersIntent network peers
+getPeersIntent nodes 
+getPeersIntent peers
+
+getBlocksIntent get blocks
+getBlocksIntent how many blocks are there
+getBlocksIntent get validated blocks
+getBlocksIntent how many validated blocks are there
+
+getBlockIntent look at most recent block
+getBlockIntent look at the lastest block
+getBlockIntent look at block number {AMAZON.NUMBER}
+
+actionsIntent uplink {actions}

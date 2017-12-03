@@ -1,11 +1,21 @@
 welcome: |
-  uplink.
+  Welcome to uplink. 
 
 welcome_re: |
-  uplink. How may I help you?
+  What would you like to do on uplink?
 
 welcome_card: |
   uplink is an Alexa skill written by Darren Tseng. Uplink blockchain integration with Alexa
+
+help: |
+  I can help you interact with the uplink distributed ledger. You can create and manage accounts, assets, and contracts on uplink.
+
+create_account: |
+  What would you like to name your account?
+
+create_asset: | 
+  Wsdasda
+  
 
 stop_bye: |
   Goodbye!

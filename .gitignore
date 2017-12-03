@@ -80,6 +80,8 @@ pyvenv.cfg
 .venv
 pip-selfcheck.json
 
+alexa/
+ngrok
 # An Ignore for scratch and test API outputs
 test_*.json
 test_*.xml

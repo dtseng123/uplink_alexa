@@ -33,3 +33,6 @@ WebOb==1.7.1
 WebTest==2.0.25
 Werkzeug==0.11.15
 wheel==0.24.0
+
+# uplink-sdk-py
+-e git+https://github.com/adjoint-io/uplink-sdk-python/#egg=uplink-sdk-py
