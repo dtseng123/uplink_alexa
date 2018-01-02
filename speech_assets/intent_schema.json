@@ -1,33 +1,122 @@
 {
-    "intents": [{
-            "intent": "getBlockIntent"
-        },
-        {
-            "intent": "getPeersIntent"
-        },
-        {
-            "intent": "getBlocksIntent"
-        },
-        {
-            "intent": "AMAZON.StopIntent"
-        },
-        {
-            "intent": "AMAZON.CancelIntent"
-        },
-        {
-            "intent": "AMAZON.HelpIntent"
-        },
-        {
-            "intent": "AMAZON.NoIntent"
-        },
-        {
-            "intent": "AMAZON.YesIntent"
-        },
-        {
-            "intent": "AMAZON.PreviousIntent"
-        },
-        {
-            "intent": "AMAZON.StartOverIntent"
-        }
-    ]
+    "languageModel": {
+        "intents": [{
+                "name": "AMAZON.CancelIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.HelpIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.MoreIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.NavigateSettingsIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.NextIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.PageDownIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.PageUpIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.PreviousIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.ScrollDownIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.ScrollLeftIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.ScrollRightIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.ScrollUpIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.StopIntent",
+                "samples": []
+            },
+            {
+                "name": "getAssetIntent",
+                "samples": [
+                    "get asset {asset_hid}",
+                    "get {asset_hid}"
+                ],
+                "slots": [{
+                    "name": "asset_hid",
+                    "type": "ALPHA_BRAVO_CHARLIE_DELTA"
+                }]
+            },
+            {
+                "name": "getTransactionsByBlock",
+                "samples": [
+                    "look at block {block_num} transaction {tx_num}",
+                    "look at transaction {tx_num} block {block_num}",
+                    "transaction {tx_num} block {block_num}",
+                    "transaction {tx_num} in block {block_num}",
+                    "block {block_num} transaction {tx_num}"
+                ],
+                "slots": [{
+                        "name": "block_num",
+                        "type": "AMAZON.NUMBER"
+                    },
+                    {
+                        "name": "tx_num",
+                        "type": "AMAZON.NUMBER"
+                    }
+                ]
+            },
+            {
+                "name": "getBlockIntent",
+                "samples": [
+                    "inpect block {block_num}",
+                    "look at block {block_num}",
+                    "look at block number {block_num}"
+                ],
+                "slots": [{
+                    "name": "block_num",
+                    "type": "AMAZON.NUMBER"
+                }]
+            },
+            {
+                "name": "getBlocksIntent",
+                "samples": [
+                    "get blocks",
+                    "get validated blocks",
+                    "how many blocks are there",
+                    "how many validated blocks are there"
+                ],
+                "slots": []
+            },
+            {
+                "name": "getPeersIntent",
+                "samples": [
+                    "get nodes",
+                    "get peers",
+                    "peers in the network",
+                    "network peers",
+                    "nodes",
+                    "peers"
+                ],
+                "slots": []
+            }
+        ],
+        "invocationName": "uplink"
+    }
 }

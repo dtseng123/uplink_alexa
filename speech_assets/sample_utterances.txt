@@ -13,5 +13,16 @@ getBlocksIntent how many validated blocks are there
 getBlockIntent look at most recent block
 getBlockIntent look at the lastest block
 getBlockIntent look at block number {AMAZON.NUMBER}
+getBlockIntent get block {AMAZON.NUMBER}
+
+getTransactionsByBlock look at block {block_num} transaction {tx_num}
+getTransactionsByBlock look at transaction {tx_num} block {block_num}
+getTransactionsByBlock transaction {tx_num} block {block_num}
+getTransactionsByBlock transaction {tx_num} in block {block_num}
+getTransactionsByBlock block {block_num} transaction {tx_num}
+
 
 actionsIntent uplink {actions}
+
+
+

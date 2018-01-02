@@ -1,0 +1,47 @@
+global msg a_id_global_ = "a0bc6043cf4b791b4d425b05d4ba8ec7d50baae05dfeb001489ab21873577975";
+
+global account renter = 'RENTER';
+global account landlord = 'LANDLORD';
+global asset asset_ = 'ASSET';
+
+global int rent_amount_total = RENT_AMT;
+global int deposit = DEPOSIT;
+
+
+global datetime check_in_date = "CHECK_IN_DATE";
+global datetime check_out_date = "CHECK_OUT_DATE";
+
+
+transition initial -> terminal;
+transition lease_confirmation -> terminal;
+transition lease_check_out -> terminal;
+transition initial -> lease_confirmation;
+transition lease_check_in -> lease_confirmation;
+transition lease_confirmation -> lease_check_out;
+
+
+@initial
+lease_check_in(msg d_id_argument_) {
+  if ((sender() == renter)) {
+    after (check_in_date){
+      transferHoldings(renter, asset_, deposit, landlord);
+      transitionTo(:lease_confirmation);
+    };
+  };
+}
+
+@lease_confirmation
+lease_confirmation(msg c_id_argument_) {
+  if ((sender() == landlord)) {
+      transferHoldings(renter, asset_, rent_amount_total, landlord);
+      transitionTo(:lease_check_out);
+  };
+}
+
+@lease_check_out
+lease_check_out(msg c_id_argument_) {
+  if ((sender() == renter)) {
+      transferHoldings(landlord, asset_, deposit, renter);
+      transitionTo(:terminal);
+  };
+}
