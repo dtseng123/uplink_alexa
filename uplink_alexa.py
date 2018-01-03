@@ -85,38 +85,36 @@ def handle_launch():
     * Card body: 'welcome_card'
     """
 
-    # CREATE RENTER ACCOUNT ===================
-    pk, sk = ecdsa_new()
+    # ===================CREATE RENTER ACCOUNT ===================
+    pk1, sk1 = ecdsa_new()
     metadata = {
         'name': 'Renter John',
     }
     renter_acct = create_account(metadata=metadata)
-    privkey_pem = sk.to_pem()
+    privkey_pem = sk1.to_pem()
 
     location = "./keys/{}".format("renter-" + renter_acct.address)
-
     save_key(privkey_pem, location)
 
-    # CREATE LANDLORD ACCOUNT ===================
+    # =================== CREATE LANDLORD ACCOUNT ===================
     pk, sk = ecdsa_new()
     meta = {
         'name': "Landlord Bob"
     }
 
     landlord_acct = create_account(metadata=meta)
-    renter_acct = create_account(metadata=metadata)
 
     landlord_hid = humanhash.humanize(landlord_acct.address.encode("hex"))
     renter_hid = humanhash.humanize(renter_acct.address.encode("hex"))
 
-    print("landlord HID: " + landlord_hid)
-    print("renter HID: " + renter_hid)
+    print("landlord HID: " + landlord_hid + "|" + landlord_acct.address)
+    print("renter HID: " + renter_hid + "|" + renter_acct.address)
 
     privkey_pem = sk.to_pem()
-    location = "./keys/{}".format("landlord-" + renter_acct.address)
+    location = "./keys/{}".format("landlord-" + landlord_acct.address)
     save_key(privkey_pem, location)
 
-    # CREATE ASSET TO USE ======================
+    # =================== CREATE ASSET TO USE ======================
     private_key = sk
     origin = landlord_acct.address
     name = "GBP"
@@ -131,7 +129,7 @@ def handle_launch():
     asset_hid = humanhash.humanize(asset.encode("hex"))
     print(asset_hid)
 
-    # CIRCULATE ASSET ======================
+    # =================== CIRCULATE ASSET ======================
     amount = 100000
     receipt = uplink.circulate_asset(private_key, origin, amount, asset)
 
@@ -142,7 +140,7 @@ def handle_launch():
     else:
         print("ERROR with circulation")
 
-    # TRANSFER ASSET ================
+    # =================== TRANSFER ASSET ================
     balance = 10000
     receipt = uplink.transfer_asset(
         private_key, origin, renter_acct.address, balance, asset)
@@ -154,7 +152,7 @@ def handle_launch():
     else:
         print("ERROR with Transfer")
 
-    # WELCOME TEXT =====================
+    # =================== WELCOME TEXT =====================
     welcome_text = render_template('welcome')
     welcome_re_text = render_template('welcome_re')
     welcome_card_text = render_template('welcome_card')
@@ -219,7 +217,7 @@ def create_account(pk=None, sk=None, metadata=None):
             continue
         break
 
-    print(account)
+    print(acct)
     return acct
 
 

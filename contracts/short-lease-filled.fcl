@@ -1,14 +1,11 @@
-global msg a_id_global_ = "a0bc6043cf4b791b4d425b05d4ba8ec7d50baae05dfeb001489ab21873577975";
-global bool damages = False;
-global int damage_amt = 0;
-global account renter = 'RENTER';
-global account landlord = 'LANDLORD';
-global asset asset_ = 'ASSET';
-global int rent_amount_total = RENT_AMT;
-global int deposit = DEPOSIT;
+global account renter = '55MJJE7u5kcbhgdjr8tWbvmcQWCq2xMqjYHsV4ovjUft';
+global account landlord = '12pk9kCSAAoSkXmZRWUPqxR47hXm2ZHVpNtyqhrisLNb';
+global asset asset_ = '7DJKgrCn4zbymmMEsSVqcW6S44AdBX2RsHFcG3MojX6y';
+global int rent_amount_total = 1000;
+global int deposit = 200;
 
-global datetime check_in_date = "CHECK_IN_DATE";
-global datetime check_out_date = "CHECK_OUT_DATE";
+global datetime check_in_date = "2018-01-01T11:56:51+00:00";
+global datetime check_out_date = "2018-01-01T11:56:51+00:00";
 
 transition initial -> terminal;
 transition lease_confirmation -> terminal;
@@ -22,10 +19,10 @@ transition lease_checkout -> damage_check;
 
 
 @initial
-lease_check_in(msg d_id_argument_) {
+lease_check_in() {
   if ((sender() == renter)) {
     after (check_in_date){
-      transferHoldings(renter, asset_, deposit, address());
+      transferTo(asset_, deposit);
       transitionTo(:lease_confirmation);
     };
   };
@@ -33,7 +30,7 @@ lease_check_in(msg d_id_argument_) {
 
 
 @lease_confirmation
-lease_confirmation(msg c_id_argument_) {
+lease_confirmation() {
   if ((sender() == landlord)) {
       transferHoldings(renter, asset_, rent_amount_total, landlord);
       transitionTo(:lease_check_out);
@@ -42,7 +39,7 @@ lease_confirmation(msg c_id_argument_) {
 
 
 @lease_check_out
-lease_check_out(msg c_id_argument_) {
+lease_check_out() {
   if ((sender() == renter)) {
       after (check_out_date) {
         transitionTo(:damage_check);
@@ -52,7 +49,7 @@ lease_check_out(msg c_id_argument_) {
 
 
 @damage_check
-damage_check(msg c_id_argument_, bool damages, int damages_amt) {
+damage_check(bool damages, int damages_amt) {
   if ((sender() == landlord)) {
       if(damages == False){
         transferFrom(asset_, deposit, renter);
@@ -61,7 +58,7 @@ damage_check(msg c_id_argument_, bool damages, int damages_amt) {
       if(damages == True) {
         if(damages_amt <= deposit) {
           transferFrom(asset_, damages_amt, landlord);
-          transferFrom(asset_, deposit - damages_amt, renter);
+          transferFrom(asset_, (deposit - damages_amt), renter);
           transitionTo(:terminal);
         };
         if(damages_amt > deposit) {
